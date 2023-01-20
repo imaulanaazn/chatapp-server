@@ -5,5 +5,5 @@ dotenv.config();
 module.exports = {
     serviceName : process.env.SERVICE_NAME,
     urlDb: process.env.MONGO_URL,
-    SECRET: process.env.SECRET
+    jwtKey: process.env.SECRET
 }

@@ -1,7 +1,7 @@
 const User = require('./model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {SECRET} = require('../../config');
+const config = require('../../config')
 
 module.exports = {
     register: async (req, res) => {
@@ -26,11 +26,11 @@ module.exports = {
             username: user.username,
             email: user.email,
             profilePicture: user.profilePicture,
-          }, SECRET);
+          }, config.jwtKey);
           res.status(200).json({token});
         } catch (err) {
           console.log(err)
-            res.status(500).json(err)
+          res.status(500).json(err)
         }
     },
     login:  async (req, res) => {
@@ -39,17 +39,20 @@ module.exports = {
             !user && res.status(404).json("user not found");
             
             const validPassword = await bcrypt.compare(req.body.password, user.password)
-            !validPassword && res.status(400).json("wrong password")
-            
-            delete user._doc.password;
-            const token = jwt.sign({
-              id: user._id,
-              username: user.username,
-              email: user.email,
-              profilePicture: user.profilePicture,
-            }, SECRET);
-            res.status(200).json({token});
+            if(validPassword) {
+              delete user._doc.password;
+              const token = jwt.sign({
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                profilePicture: user.profilePicture,
+              }, config.jwtKey);
+              res.status(200).json({token});
+            }else{
+              res.status(400).json("wrong password")
+            }
         } catch (err) {
+          console.log(err)
           res.status(500).json(err)
         }
     }
