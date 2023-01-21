@@ -7,6 +7,9 @@ const cors = require('cors')
 
 const authRouter = require('./app/auth/router');
 const verifyTokenRouter = require('./app/verifyToken/router');
+const convoRouter = require('./app/conversation/router');
+const messageRouter = require('./app/message/router');
+const userRouter = require('./app/user/router');
 
 var app = express();
 app.use(cors())
@@ -25,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/users', usersRouter);
 app.use('/auth', authRouter)
 app.use('/verify', verifyTokenRouter)
+app.use('/conversations', convoRouter)
+app.use('/messages', messageRouter)
+app.use('/users', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
