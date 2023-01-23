@@ -17,7 +17,7 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    setProfile: async (req,res,next)=>{
+    setProfileImg: async (req,res,next)=>{
         const userId = req.params.id
         try {
             if(req.file){
