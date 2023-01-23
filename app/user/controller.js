@@ -35,7 +35,7 @@ module.exports = {
                   try {
         
                     const user = await User.findByIdAndUpdate(userId, {profilePicture:filename}, {new:true})
-                    res.status(201).json({ data : user }) 
+                    res.status(200).json({ data : user }) 
                   } catch (err) {
                     if(err && err.name === "ValidationError"){
                       return res.status(422).json({
@@ -52,6 +52,15 @@ module.exports = {
             console.log(err)
             res.status(500).json(err)
         }
+    },
+    deleteProfileImg: async (req,res)=>{
+      const userId = req.params.id;
 
+      try {
+        await User.findByIdAndUpdate(userId, {profilePicture:""}, {new:true})
+        res.status(200).json({message: "profile deleted"})
+      } catch (err) {
+        res.status(500).json(err)
+      }
     }
 }
