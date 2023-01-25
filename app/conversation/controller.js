@@ -17,7 +17,10 @@ module.exports = {
 
     getPrivateConvo: async (req,res)=>{
         try{
-            const conversation = await PrivateConvo.find({members: {$in:[req.params.userId]}});
+            const conversation = await PrivateConvo.find({$and:[
+                    {members: {$in:[req.params.userId]}},
+                    {archived: {$nin:[req.params.userId]}}
+                ]});
             res.status(200).json(conversation)
         }catch(err){
             res.status(500).json(err)
@@ -37,7 +40,10 @@ module.exports = {
 
     getGroupConvo: async (req,res)=>{
         try{
-            const conversation = await GroupConvo.find({members: {$in:[req.params.userId]}})
+            const conversation = await GroupConvo.find({$and:[
+                {members: {$in:[req.params.userId]}},
+                {archived: {$nin:[req.params.userId]}}
+            ]})
             res.status(200).json(conversation)
         }catch(err){
             res.status(500).json(err)
